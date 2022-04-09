@@ -1,6 +1,5 @@
 //
 //  Quaternion.h
-//  testQuaternion
 //
 //  Created by Loy Kyle Wong on 21/12/2016.
 //  Copyright © 2016 Loy Kyle Wong. All rights reserved.

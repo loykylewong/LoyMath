@@ -1,5 +1,5 @@
 /*
- * Mat.h
+ * Matrix.h
  *
  *  Created on: Aug 30, 2016
  *      Author: Loywong Kyle Wong
