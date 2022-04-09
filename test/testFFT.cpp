@@ -2,7 +2,7 @@
  * testFFT.cpp
  *
  *  Created on: Oct 27, 2019
- *      Author: loywong
+ *      Author: Loywong Kyle Wong
  */
 
 
@@ -19,7 +19,7 @@ void testFFT(void)
 		x[i].real = i < 128 ? 1.0f : -1.0f;
 		x[i].imag = 0.f;
 	}
-	fft.Trans(x, y);
+	fft.Trans(x, y);	// watch result in watch...
 	fft.Trans(y, z, 1, -1);
 	fft.Trans(x, y, 0, 1);
 	fft.Trans(x, x);

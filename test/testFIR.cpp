@@ -5,17 +5,17 @@
 //  Created by Loy Kyle Wong on 11/02/2017.
 //  Copyright © 2017 Loy Kyle Wong. All rights reserved.
 //
-/*
+
 #include <stdio.h>
 #include <cmath>
-#include "FIR.h"
+#include "../LoyMath/FIR.h"
 using namespace LoyMath;
 
 const int dlen = 4096;
 float wave[dlen];
 float wout[dlen];
 
-int testFIR()
+void testFIR()
 {
     FIRSymm<15> sfir(8,
                      0.001734049016867023063070973876165226102f,
@@ -40,8 +40,8 @@ int testFIR()
     }
     for(int i = 0; i < dlen; i++)
     {
-        wout[i] = sfir.Filter(wave[i]);
+        wout[i] = sfir.Filter(wave[i]); // debug & watch
     }
-    return 0;
+
 }
-*/
+

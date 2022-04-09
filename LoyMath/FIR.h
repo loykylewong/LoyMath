@@ -23,12 +23,12 @@ namespace LoyMath {
         T z[cNum];
     public:
         FIRDirect()
-    		{
+        {
             for(int i = 0; i < cNum; i++)
             {
             		this->z[i] = (T)0;
             }
-    		}
+        }
         FIRDirect(int num, ...)
         {
         		if(num != cNum)
@@ -110,8 +110,8 @@ namespace LoyMath {
         }
         FIRSymm(int num, ...)
         {
-        		if(num != cNum)
-        			throw "Coef num not met!\n";
+            if(num != cNum)
+                throw "Coef num not met!\n";
             va_list vl;
             va_start(vl, num);
             for(int i = 0; i < cNum; i++)

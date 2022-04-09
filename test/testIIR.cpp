@@ -9,12 +9,13 @@
 #include <cmath>
 #include "../LoyMath/IIR.h"
 using namespace LoyMath;
-const double pi = 3.1415926535897932384626;
-const int dlen = 4096;
-float wave[dlen];
-float wout[dlen];
 
-int testIIR()
+const double pi = 3.1415926535897932384626;
+const int dlen1 = 4096;
+float wave1[dlen1];
+float wout1[dlen1];
+
+void testIIR()
 {
     IIRSos<9, float> iir(23,
                   -1.942480944379443741354407393373548984528,
@@ -53,16 +54,16 @@ int testIIR()
     float omg;
     float ang = 0.f;
     // initialize wave
-    for(int i = 0; i < dlen; i++)
+    for(int i = 0; i < dlen1; i++)
     {
         // freq from 0 to M_PI
-        omg = (float)pi * (float)i / (float)dlen;
+        omg = (float)pi * (float)i / (float)dlen1;
         ang += omg;
-        wave[i] = std::sin(ang);
+        wave1[i] = std::sin(ang);
     }
-    for(int i = 0; i < dlen; i++)
+    for(int i = 0; i < dlen1; i++)
     {
-        wout[i] = iir.Filter(wave[i]);
+        wout1[i] = iir.Filter(wave1[i]); // debug & watch
     }
-    return 0;
+
 }

@@ -1,8 +1,10 @@
+// this file is OBSOLETED.
+
 /*
  * Mat.h
  *
- *  Created on: Aug 30, 2016
- *      Author: loywong
+ *  Created on: Oct 20, 2015
+ *      Author: Loywong Kyle Wong
  */
 
 #ifndef MAT_H_

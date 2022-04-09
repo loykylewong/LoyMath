@@ -9,6 +9,7 @@
 //#include <stdio.h>
 #include <iostream>
 #include <fstream>
+#include <chrono>
 
 #include "../LoyMath/KalmanFilter.h"
 
@@ -20,7 +21,7 @@ float acc[KDLEN], omg[KDLEN], per[KDLEN], ver[KDLEN], pel[KDLEN], vel[KDLEN];
 float x, dx, psi ,dpsi;
 Mat<4,1,float> xout[KDLEN];
 
-int testKalmanFilter()
+void testKalmanFilter()
 {
 //    ifs >> acc >> omg >> per >> ver >> pel >> vel >> x >> dx >> psi >> dpsi;
 //    ifs >> acc >> omg >> per >> ver >> pel >> vel >> x >> dx >> psi >> dpsi;
@@ -73,28 +74,29 @@ int testKalmanFilter()
     
     KalmanFilter<4, 2, 4, float> kf(A, B, H, Q, R, X0, P0);
     
-    ifstream ifs("/Users/loywong/projects/matlab/nmouse/nmouse2017/kd");
+    ifstream ifs("../test/kalman_data/kd");
     for(int i = 0; i < KDLEN; i++)
     {
         ifs >> acc[i] >> omg[i] >> per[i] >> ver[i] >> pel[i] >> vel[i] >> x >> dx >> psi >> dpsi;
     }
     ifs.close();
 
-    const clock_t begin_time = clock();
+    auto tp0 = std::chrono::steady_clock::now();
     for(int i = 0; i < KDLEN; i++)
     {
         kf.Predict(Mat<2, 1, float>(2, acc[i], omg[i]));
         xout[i] = kf.Correct(Mat<4, 1, float>(4, per[i], ver[i], pel[i], vel[i]));
     }
-    std::cout << float(clock() - begin_time) / CLOCKS_PER_SEC;
+    auto tp1 = std::chrono::steady_clock::now();
+    float t = std::chrono::duration<float, std::micro>(tp1 - tp0).count();
+    std::cout << "time cost: " << t << "us" << endl;
 
 
-    ofstream ofs("/Users/loywong/projects/matlab/nmouse/nmouse2017/kdc");
+    ofstream ofs("../test/kalman_data/kdc");
     for(int i = 0; i < KDLEN; i++)
     {
         ofs << xout[i](0,0) << ' ' << xout[i](1,0) << ' ' << xout[i](2,0) << ' ' << xout[i](3,0) << endl;
     }
     ofs.close();
-    
-    return 0;
+
 }

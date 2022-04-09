@@ -14,7 +14,7 @@ using namespace std;
 
 using namespace LoyMath;
 
-int testMatrix() {
+void testMatrix() {
 //	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 
 	char s[256];
@@ -168,5 +168,4 @@ int testMatrix() {
     cout << mc.Adjoint(2, 0, sign).ToStr() << mc.Adjoint(2, 0, sign).Det() * sign << endl;
     cout << mc.Adjoint(3, 0, sign).ToStr() << mc.Adjoint(3, 0, sign).Det() * sign << endl;
 
-    return 0;
 }

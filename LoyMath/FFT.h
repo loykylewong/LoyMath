@@ -2,7 +2,7 @@
  * Fft.h
  *
  *  Created on: Oct 27, 2019
- *      Author: loywong
+ *      Author: Loywong Kyle Wong
  */
 
 #ifndef LOYMATH_FFT_H_

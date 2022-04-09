@@ -1,6 +1,6 @@
 //============================================================================
 // Name        : zft.cpp
-// Author      : loywong
+// Author      : Loywong Kyle Wong
 // Version     :
 // Copyright   : Your copyright notice
 // Description : Hello World in C++, Ansi-style
@@ -14,7 +14,7 @@ using namespace LoyMath;
 
 #define TF(x) ((1 - zpow(-1000, (x)))/(1 - zpow(-1, (x))))
 
-int testComplex()
+void testComplex()
 {
     char str[64];
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
@@ -45,5 +45,5 @@ int testComplex()
 	Cplx<double> resp = TF(0.00598398601);
     double gain = 20 * std::log10(resp.Abs());
 	cout << gain << endl;
-	return 0;
+
 }

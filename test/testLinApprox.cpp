@@ -6,7 +6,8 @@
 //  Copyright © 2019 Loy Kyle Wong. All rights reserved.
 //
 
-//#include <stdio.h>
+#include <stdio.h>
+#include <iostream>
 #include <cmath>
 
 void linEquSolve(float *mat, int n)
@@ -113,10 +114,14 @@ void testLinApprox()
 {
     float x[] = {1.f, 2.f, 3.f, 4.f, 5.f};
     float y1[] = {-.11f, -.21f, -.31f, -.41f, -.51f};   // y1 = -0.1*x-0.01
-    float y2[] = {2.1f, 3.1f, 6.1f, 11.1f, 18.1f};      // y2 = x^2-2*x+3
+    float y2[] = {2.01f, 3.02f, 5.9f, 11.1f, 18.0f};      // y2 = x^2-2*x+3
     float k = 0.f, b = 0.f;
     float c[3] = {0.f};
     LinApprox(x, y1, 5, &k, &b);
+    using namespace std;
+    cout << "lin fit: k = " << k << ", b = " << b << ", ref is: k = -0.1, b = -0.01." << endl;
     Poly2ndApprox(x, y2, 5, c);
+    printf("2nd poly fit: c0 = %f, c1 = %f, c2 = %f, ref is c0 = 3, c1 = -2, c2 = 1.", c[0], c[1], c[2]);
+    cout << endl;
     
 }

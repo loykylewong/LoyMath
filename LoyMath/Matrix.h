@@ -2,7 +2,7 @@
  * Mat.h
  *
  *  Created on: Aug 30, 2016
- *      Author: loywong
+ *      Author: Loywong Kyle Wong
  */
 
 #ifndef MAT_H_
@@ -10,7 +10,7 @@
 
 #include <stdarg.h>
 //#include <stdio.h>
-//#include <string>
+#include <string.h>
 #include <sstream>
 #include <cmath>
 
@@ -40,11 +40,16 @@ private:
     {
         return b >= 0.0 ? Abs(a) : -Abs(a);
     }
-    inline T max(T a, T b)
+    template<typename T1>
+    static constexpr T1 max(T1 a, T1 b)
     {
         return a >= b ? a : b;
     }
-
+    template<typename T1>
+    static constexpr T1 min(T1 a, T1 b)
+    {
+        return a <= b ? a : b;
+    }
     // inverse 2 order
     inline void inv2(Mat<2,2,T> &m)
     {
@@ -159,8 +164,15 @@ private:
               elem[0][1]*elem[1][0]*elem[2][2] + elem[0][0]*elem[1][1]*elem[2][2]) / den;
     }
 public:
-    T elem[R][C] = {0};
-    Mat(){}
+    T elem[R][C];
+    Mat()
+    {
+        memset(&(elem[0][0]), 0, R * C * sizeof(T));
+    }
+    Mat(T *elem_array)
+    {
+        memcpy(&(elem[0][0]), elem_array, R * C * sizeof(T));
+    }
     Mat(T diag)
     {
         for(int r = 0; r < R; r++)
@@ -192,15 +204,35 @@ public:
     virtual ~Mat(){}
     inline int Row(){return R;}
     inline int Col(){return C;}
-    void Reset()
+    void ResetAll(T v = (T)0)
     {
         for(int r = 0; r < R; r++)
         {
             for(int c = 0; c < C; c++)
             {
-                elem[r][c] = (T)0.0;
+                elem[r][c] = v;
             }
         }
+    }
+    void ResetAll(T *elem_array)
+    {
+        memcpy(&(elem[0][0]), elem_array, R * C * sizeof(T));
+    }
+    void ResetToDiag(T diag = (T)0)
+    {
+        for(int r = 0; r < R; r++)
+            for(int c = 0; c < C; c++)
+                if(r == c)
+                    elem[r][c] = diag;
+                else
+                    elem[r][c] = (T)0;
+    }
+    void ResetDiag(T diag = (T)0)
+    {
+        for(int r = 0; r < R; r++)
+            for(int c = 0; c < C; c++)
+                if(r == c)
+                    elem[r][c] = diag;
     }
     T &operator()(int row)
     {
@@ -297,7 +329,7 @@ public:
         return rtn;
     }
     template <int R1, int C1, typename T1>
-    Mat<R,C,T> &CopyFrom(Mat<R1,C1,T1> &m, int srcR, int srcC, int dstR, int dstC, int rows = R1, int cols = C1)
+    Mat<R,C,T> &CopyFrom(Mat<R1,C1,T1> &m, int srcR, int srcC, int dstR, int dstC, int rows = min(R, R1), int cols = min(C, C1))
     {
         for(int sr = srcR, dr = dstR; dr < dstR + rows; sr++, dr++)
             for(int sc = srcC, dc = dstC; dc < dstC + cols; sc++, dc++)
@@ -348,6 +380,15 @@ public:
             for(int c = 0; c < C; c++)
             {
                 elem[r][c] = m.elem[r][c] - elem[r][c];
+            }
+        return *this;
+    }
+    Mat<R,C,T> &RevMinus(const T &v)
+    {
+        for(int r = 0; r < R; r++)
+            for(int c = 0; c < C; c++)
+            {
+                elem[r][c] = v - elem[r][c];
             }
         return *this;
     }
@@ -426,6 +467,17 @@ public:
         return rtn;
     }
     
+    Mat<R,C,T> operator*(T v) const
+    {
+        Mat<R,C,T> rtn;
+        for(int r = 0; r < R; r++)
+            for(int c = 0; c < C; c++)
+            {
+                rtn.elem[r][c] = elem[r][c] * v;
+            }
+        return rtn;
+    }
+
     Mat<R,C,T> Cross(const Mat<R,C,T> &r) const
     {
         Mat<R,C,T> rtn;
@@ -693,69 +745,6 @@ public:
             return rtn;
         }
     }
-
-//    Mat<R,C,T> Inv()
-//    {
-//        if(R != C)
-//            throw MatError::NotASquareMatrix;
-//        else
-//        {
-//            Mat<R,C+C,T> dm;
-//            Mat<R,C,T> rtn;
-//            float coef;
-//            for(int r = 0; r < R; r++)
-//                for(int c = 0; c < C+C; c++)
-//                    if(c < C)
-//                        dm.elem[r][c] = elem[r][c];
-//                    else if(c - C == r)
-//                        dm.elem[r][c] = 1;
-//                    else
-//                        dm.elem[r][c] = 0;
-//            for(int r = 0; r < R - 1; r++)    // up triangle
-//            {
-//                int major = r;
-//                for(int i = r + 1; i < R; i++)    // find major row
-//                    if(Abs(dm.elem[i][r]) > Abs(dm.elem[major][r]))
-//                        major = i;
-//                if(major != r) // swap row
-//                    for(int c = 0; c < C+C; c++)
-//                        swap(dm.elem[r][c], dm.elem[major][c]);
-//                if(dm.elem[r][r] == (T)0)
-//                {
-//                    throw MatError::SingularMatrix;
-//                }
-//                for(int i = r + 1; i < R; i++)
-//                {
-//                    coef = -dm.elem[i][r] / dm.elem[r][r];
-//                    dm.elem[i][r] = 0;
-//                    for(int c = r + 1; c < C+C; c++)
-//                        dm.elem[i][c] += coef * dm.elem[r][c];
-//                }
-//            }
-//            for(int r = 0; r < R; r++)    // diag to 1
-//            {
-//                if(dm.elem[r][r] == (T)0)
-//                {
-//                    throw MatError::SingularMatrix;
-//                }
-//                coef = 1.f / dm.elem[r][r];
-//                dm.elem[r][r] = 1;
-//                for(int c = r + 1; c < C+C; c++)
-//                    dm.elem[r][c] *= coef;
-//            }
-//            for(int r = R - 1; r > 0; r--)    // to I
-//            {
-//                for(int i = r - 1; i >= 0; i--)
-//                {
-//                    float coef = -dm.elem[i][r];
-//                    for(int c = r; c < C+C; c++)
-//                        dm.elem[i][c] += dm.elem[r][c] * coef;
-//                }
-//            }
-//            dm.SubMat(0, C, rtn);
-//            return rtn;
-//        }
-//    }
     
     T NormM1() const
     {
@@ -797,36 +786,10 @@ public:
         }
         return std::sqrt(rtn);
     }
-    
-//    Mat<C,R,T> PInv(T eps = (T)0.0)
-//    {
-//        if(eps == (T)0.0)
-//        {
-//            if(sizeof(T) == sizeof(float))
-//                eps = 1e-6;
-//            else if(sizeof(T) == sizeof(double))
-//                eps = 1e-14;
-//        }
-//        Mat<C,R,T> X(this->Trans());
-//        Mat<R,R,T> I((T)1.0), E;
-//        T nm = (*this * X).Norm2();
-//        X *= (T)1.0 / nm;
-//        nm = (T)1.0;
-//        while(nm > eps)
-//        {
-////            nmd = nm * eps;
-////            nmu = nm + nmd;
-////            nmd = nm - nmd;
-////            X *= II - (*this * X);
-////            nm = X.NormMInf();
-//            E = I - (*this * X);
-//            nm = E.NormMInf();
-//            E += I;
-//            X *= E;
-//        }
-//        return X;
-//    }
 
+    // pseudo inverse use iteration algor, it's very slow,
+    // you may use Inv(A.Trans() * A) * A.Trans() for left pinv,
+    // and A.Trans() * Inv(A * A.Trans()) for right pinv.
     Mat<C,R,T> PInv(T eps = (T)0.0)
     {
         try

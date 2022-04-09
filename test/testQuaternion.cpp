@@ -11,7 +11,7 @@
 #include <cmath>
 using namespace LoyMath;
 
-int testQuaternion()
+void testQuaternion()
 {
     float r, p, y;
     float rl, pl, yl;
@@ -28,10 +28,14 @@ int testQuaternion()
         q *= Quat<>(0.f, M_PI_4 / 10, 0.f);
         ql.LMult(Quat<>(0.f, M_PI_4 / 10, 0.f));
         q.ToTBAngleZYX(r, p, y);
+        printf("[%2d] %9.6f, %9.6f, %9.6f\r\n", i, r, p, y);
         ql.ToTBAngleZYX(rl, pl, yl);
+        printf("[%2d] %9.6f, %9.6f, %9.6f\r\n", i, rl, pl, yl);
     }
     q.ToAxisAndAngle(ux, uy, uz, zeta);
+    printf("[==] %9.6f, %9.6f, %9.6f, %9.6f\r\n", ux, uy, uz, zeta);
     ql.ToAxisAndAngle(uxl, uyl, uzl, zetal);
+    printf("[==] %9.6f, %9.6f, %9.6f, %9.6f\r\n", uxl, uyl, uzl, zetal);
 
     // q:  90deg about z'
     // ql: 90deg about z
@@ -40,10 +44,14 @@ int testQuaternion()
         q *= Quat<>(0.f, 0.f, M_PI_2 / 10);
         ql.LMult(Quat<>(0.f, 0.f, M_PI_2 / 10));
         q.ToTBAngleZYX(r, p, y);
+        printf("[%2d] %9.6f, %9.6f, %9.6f\r\n", i, r, p, y);
         ql.ToTBAngleZYX(rl, pl, yl);
+        printf("[%2d] %9.6f, %9.6f, %9.6f\r\n", i, rl, pl, yl);
     }
     q.ToAxisAndAngle(ux, uy, uz, zeta);
+    printf("[==] %9.6f, %9.6f, %9.6f, %9.6f\r\n", ux, uy, uz, zeta);
     ql.ToAxisAndAngle(uxl, uyl, uzl, zetal);
+    printf("[==] %9.6f, %9.6f, %9.6f, %9.6f\r\n", uxl, uyl, uzl, zetal);
     
     Vec<3> v(3, 1.0, 0.0, 0.0);
     // rotate (1,0,0)
@@ -52,5 +60,5 @@ int testQuaternion()
     Vec<3> coorInNED = (q * Quat<>(0, v) * q.Conj()).Vector();
     // (1,0,0) in origin frame to coordinates in rotated frame
     Vec<3> coorInBody = (q.Conj() * Quat<>(0, v) * q).Vector();
-    return 0;
+
 }
