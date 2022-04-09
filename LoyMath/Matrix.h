@@ -38,7 +38,7 @@ private:
     }
     inline T cpSign(T a, T b)
     {
-        return b >= 0.0 ? Abs(a) : -Abs(a);
+        return b >= 0.0 ? std::abs(a) : -std::abs(a);
     }
     template<typename T1>
     static constexpr T1 max(T1 a, T1 b)
@@ -625,7 +625,7 @@ public:
             {
                 int major = r;
                 for(int i = r + 1; i < C; i++)    // find major row
-                    if(abs(dm.elem[i][r]) > abs(dm.elem[major][r]))
+                    if(std::abs(dm.elem[i][r]) > std::abs(dm.elem[major][r]))
                         major = i;
                 if(major != r) // swap row
                 {
@@ -704,7 +704,7 @@ public:
             {
                 int major = r;
                 for(int i = r + 1; i < C; i++)    // find major row
-                    if(abs(dm.elem[i][r]) > abs(dm.elem[major][r]))
+                    if(std::abs(dm.elem[i][r]) > std::abs(dm.elem[major][r]))
                         major = i;
                 if(major != r) // swap row
                     for(int c = 0; c < R+R; c++)
@@ -753,7 +753,7 @@ public:
         {
             for(int c = 0; c < C; c++)
             {
-                rtn += Abs(elem[r][c]);
+                rtn += std::abs(elem[r][c]);
             }
         }
         return rtn;
@@ -766,7 +766,7 @@ public:
         {
             for(int c = 0; c < C; c++)
             {
-                a = abs(elem[r][c]);
+                a = std::abs(elem[r][c]);
                 if(a > rtn)
                     rtn = a;
             }

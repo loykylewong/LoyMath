@@ -8,6 +8,8 @@
 #ifndef __COMPLEX_H__
 #define __COMPLEX_H__
 
+#include <cmath>
+
 namespace LoyMath {
 
 template <typename T = float>
@@ -22,8 +24,8 @@ public:
 	{
 		if(format == 'p')	// polar format
 		{
-			this->real = a * cos(b);
-			this->imag = a * sin(b);
+			this->real = a * std::cos(b);
+			this->imag = a * std::sin(b);
 		}
 		else
 		{
@@ -31,7 +33,7 @@ public:
 			this->imag = b;
 		}
 	}
-	
+
 	T Abs() const
 	{
 		return sqrt(this->real * this->real + this->imag * this->imag);
@@ -39,9 +41,9 @@ public:
 
 	T Arg() const
 	{
-		return atan2(this->imag, this->real);
+		return std::atan2(this->imag, this->real);
 	}
-	
+
 	char *ToString(char *str, char format) const
 	{
 		if(format == 'p')	// polar format
@@ -50,7 +52,7 @@ public:
 			sprintf(str, "%g + j %g", this->real, this->imag);
 		return str;
 	}
-	
+
 	friend Cplx<T> operator+(const Cplx<T> &l, const Cplx<T> &r)
 	{
 		return Cplx<T>(l.real + r.real, l.imag + r.imag);
@@ -111,8 +113,8 @@ public:
 		T babs, barg, abs, arg;
 		babs = b.Abs();
 		barg = b.Arg();
-		abs = pow(babs, e.real) * exp(-e.imag * barg);
-		arg = e.real * barg + e.imag * log(babs);
+		abs = std::pow(babs, e.real) * std::exp(-e.imag * barg);
+		arg = e.real * barg + e.imag * std::log(babs);
 		return Cplx<T>(abs, arg, 'p');
 	}
     Cplx<T> &operator^=(const Cplx<T> &e)
@@ -120,18 +122,18 @@ public:
         T babs, barg, abs, arg;
         babs = this->Abs();
         barg = this->Arg();
-        abs = pow(babs, e.real) * exp(-e.imag * barg);
-        arg = e.real * barg + e.imag * log(babs);
-        this->real = abs * cos(arg);
-        this->imag = abs * sin(arg);
+        abs = std::pow(babs, e.real) * std::exp(-e.imag * barg);
+        arg = e.real * barg + e.imag * std::log(babs);
+        this->real = abs * std::cos(arg);
+        this->imag = abs * std::sin(arg);
         return *this;
     }
-    
+
 	Cplx<T> Conj(void)
 	{
         return Cplx<T>(real, -imag);
 	}
-    
+
     Cplx<T> &ConjMe(void)
     {
         imag = -imag;
@@ -151,7 +153,7 @@ template <typename T> Cplx<T> exp(const Cplx<T>& a)
 template <typename T> Cplx<T> zpow(int i, T omega)
 {
 	T arg = omega * i;
-	return Cplx<T>(cos(arg), sin(arg));
+	return Cplx<T>(std::cos(arg), std::sin(arg));
 }
 }
 
