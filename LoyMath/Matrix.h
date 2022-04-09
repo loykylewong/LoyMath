@@ -796,7 +796,7 @@ public:
         {
             return this->Inv();
         }
-        catch (MatError err)
+        catch (MatError &err)
         {
             if(eps == (T)0.0)
             {
