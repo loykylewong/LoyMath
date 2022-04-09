@@ -49,7 +49,7 @@ namespace LoyMath {
             return rtn * gain;
         }
     };
-    
+
     template<typename T = float>
     class IIR2nd
     {
@@ -96,7 +96,7 @@ namespace LoyMath {
             return rtn * gain;
         }
     };
-    
+
     // Order must >= 3
     template<int Order, typename T = float>
     class IIRSos
@@ -140,7 +140,7 @@ namespace LoyMath {
                 }
             }
             va_end(vl);
-            
+
             for(int i = 0; i < Order; i++)
             {
                 sdata[i] = (T)0;

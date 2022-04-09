@@ -4,6 +4,8 @@
         "chrono": "cpp",
         "ratio": "cpp",
         "__bit_reference": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "ostream": "cpp",
+        "cmath": "cpp"
     }
 }

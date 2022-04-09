@@ -11,12 +11,12 @@
 #include "../LoyMath/FIR.h"
 using namespace LoyMath;
 
-const int dlen = 4096;
-float wave[dlen];
-float wout[dlen];
-
 void testFIR()
 {
+    const int dlen = 4096;
+    float *wave = new float[dlen];
+    float *wout = new float[dlen];
+
     FIRSymm<15> sfir(8,
                      0.001734049016867023063070973876165226102f,
                      0.008416143153479254540583198718195490073f,
@@ -27,7 +27,7 @@ void testFIR()
                      0.180164024639846431785628055877168662846f,
                      0.38360027088864467881279551875195465982f
                    );
-    
+
     float omg;
     float ang = 0.f;
     // initialize wave
@@ -43,5 +43,7 @@ void testFIR()
         wout[i] = sfir.Filter(wave[i]); // debug & watch
     }
 
+    delete[] wave;
+    delete[] wout;
 }
 

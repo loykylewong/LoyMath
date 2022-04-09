@@ -15,7 +15,7 @@
 #include <cmath>
 
 namespace LoyMath {
-    
+
 enum class MatError : int
 {
     ArgOutOfRange       = 0x00010000,
@@ -466,7 +466,7 @@ public:
             }
         return rtn;
     }
-    
+
     Mat<R,C,T> operator*(T v) const
     {
         Mat<R,C,T> rtn;
@@ -519,7 +519,7 @@ public:
         }
         return rtn;
     }
-    
+
     Mat<1,C,T> Dots(const Mat<R,C,T> &r) const
     {
         Mat<1,C,T> rtn;
@@ -531,7 +531,7 @@ public:
         }
         return rtn;
     }
-    
+
     friend Mat<1,C,T> Dots(const Mat<R,C,T> &l, const Mat<R,C,T> &r)
     {
         Mat<1,C,T> rtn;
@@ -543,7 +543,7 @@ public:
         }
         return rtn;
     }
-    
+
     T Dot(const Mat<R,C,T> &r) const
     {
         T rtn;
@@ -553,7 +553,7 @@ public:
                 rtn += elem[j][i] * r.elem[j][i];
         return rtn;
     }
-    
+
     friend T Dot(const Mat<R,C,T> &l, const Mat<R,C,T> &r)
     {
         T rtn;
@@ -563,7 +563,7 @@ public:
                 rtn += l.elem[j][i] * r.elem[j][i];
         return rtn;
     }
-    
+
     // return Transpose
     Mat<C,R,T> Trans() const
     {
@@ -745,7 +745,7 @@ public:
             return rtn;
         }
     }
-    
+
     T NormM1() const
     {
         T rtn = 0.0;
@@ -758,7 +758,7 @@ public:
         }
         return rtn;
     }
-    
+
     T NormMInf() const
     {
         T rtn = 0.0, a;
@@ -773,7 +773,7 @@ public:
         }
         return rtn;
     }
-    
+
     T Norm2() const
     {
         T rtn = 0.0;
@@ -818,7 +818,7 @@ public:
             return X;
         }
     }
-    
+
     long PrintStr(char *str, const char *format = "%g")
     {
         char *s = str;
@@ -878,7 +878,7 @@ public:
 
 template<int R, typename T=float>
 using Vec = Mat<R,1,T>;
-    
+
 }
 
 #endif /* MATF_H_ */

@@ -11,19 +11,19 @@
 using namespace LoyMath;
 
 const double pi = 3.1415926535897932384626;
-const int dlen1 = 4096;
-float wave1[dlen1];
-float wout1[dlen1];
 
 void testIIR()
 {
+    const int dlen = 4096;
+    float *wave = new float[dlen];
+    float *wout = new float[dlen];
     IIRSos<9, float> iir(23,
                   -1.942480944379443741354407393373548984528,
                   1.0,
                   -1.971465158132082340358692817972041666508,
                   0.989254183046181401195440230367239564657,
                   0.098852005821808253127613852484500966966,
-                  
+
                   -1.928601969568733309756680682767182588577,
                   1.0,
                   -1.952775102227502834750794136198237538338,
@@ -41,7 +41,7 @@ void testIIR()
                   -1.922991305196560363199864696071017533541,
                   0.926922042208547458663758789043640717864,
                   0.010414826042333949138174453707961220061,
-                  
+
                   1.0,
                   -0.958960676763685238022105750133050605655,
                   0.064198533136987256941807800103561021388
@@ -50,20 +50,22 @@ void testIIR()
 //                 1,
 //                 -0.766838340633112180988462114328285679221,
 //                 0.116580829683443965016920174093684181571);
-    
+
     float omg;
     float ang = 0.f;
     // initialize wave
-    for(int i = 0; i < dlen1; i++)
+    for(int i = 0; i < dlen; i++)
     {
         // freq from 0 to M_PI
-        omg = (float)pi * (float)i / (float)dlen1;
+        omg = (float)pi * (float)i / (float)dlen;
         ang += omg;
-        wave1[i] = std::sin(ang);
+        wave[i] = std::sin(ang);
     }
-    for(int i = 0; i < dlen1; i++)
+    for(int i = 0; i < dlen; i++)
     {
-        wout1[i] = iir.Filter(wave1[i]); // debug & watch
+        wout[i] = iir.Filter(wave[i]); // debug & watch
     }
 
+    delete[] wave;
+    delete[] wout;
 }
