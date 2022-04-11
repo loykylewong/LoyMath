@@ -115,18 +115,20 @@ namespace LoyMath {
                 sdata[i] = (T)0;
             }
         }
+        // bugs found when num >= 13, use coef array (pointer) version if order >= 5.
         IIRSos(int num, ...)
         {
-            va_list vl;
-            va_start(vl, num);
             if(num != cNum)
                 throw "Coefs number not met!";
             float c[cNum];
+            va_list vl;
+            va_start(vl, num);
             for(int i = 0; i < cNum; i++)
             {
                 c[i] = (T)va_arg(vl, double);
                 if(--num == 0) break;
             }
+            va_end(vl);
             for(int o = 0, i = 0; o < Order; o+=2)
             {
                 if(o != Order - 1)
@@ -139,7 +141,6 @@ namespace LoyMath {
                     slast.UpdateCoef(c[i], c[i+1], c[i+2]);
                 }
             }
-            va_end(vl);
 
             for(int i = 0; i < Order; i++)
             {
