@@ -15,17 +15,20 @@ void testQuaternion();
 void testFFT();
 void testFIR();
 void testIIR();
+void testFp16();
 
 int main(int argc, const char * argv[]) {
     // insert code here...
     std::cout << "Hello, World!\n";
-    testMatrix();
-    testComplex();
-    testLinApprox();
-    testKalmanFilter();
-    testQuaternion();
-    testFFT();
-    testFIR();
-    testIIR();
+//    testMatrix();
+//    testComplex();
+//    testLinApprox();
+//    testKalmanFilter();
+//    testQuaternion();
+//    testFFT();
+//    testFIR();
+//    testIIR();
+    testFp16();
+
     return 0;
 }
