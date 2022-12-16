@@ -270,38 +270,48 @@ public:
     // ---- assign arith oprs ----
     fp16 &operator+=(const fp16& r)
     {
-        this->value = from_base(to_base(value) + to_base(r));
+        this->value = from_base(to_base(value) + to_base(r.value));
+        return *this;
     }
     fp16 &operator-=(const fp16& r)
     {
-        this->value = from_base(to_base(value) - to_base(r));
+        this->value = from_base(to_base(value) - to_base(r.value));
+        return *this;
     }
     fp16 &operator*=(const fp16& r)
     {
-        this->value = from_base(to_base(value) * to_base(r));
+        this->value = from_base(to_base(value) * to_base(r.value));
+        return *this;
     }
     fp16 &operator/=(const fp16& r)
     {
-        this->value = from_base(to_base(value) / to_base(r));
+        this->value = from_base(to_base(value) / to_base(r.value));
+        return *this;
     }
     // ---- arith oprs ----
     fp16 operator+(const fp16& r) const
     {
-        return fp16(from_base(to_base(value) + to_base(r)));
+        return fp16(from_base(to_base(value) + to_base(r.value)));
+        return *this;
     }
     fp16 operator-(const fp16& r) const
     {
-        return fp16(from_base(to_base(value) - to_base(r)));
+        return fp16(from_base(to_base(value) - to_base(r.value)));
+        return *this;
     }
     fp16 operator*(const fp16& r) const
     {
-        return fp16(from_base(to_base(value) * to_base(r)));
+        return fp16(from_base(to_base(value) * to_base(r.value)));
+        return *this;
     }
     fp16 operator/(const fp16& r) const
     {
-        return fp16(from_base(to_base(value) / to_base(r)));
+        return fp16(from_base(to_base(value) / to_base(r.value)));
+        return *this;
     }
 };
+
+using float16 = fp16<float>;
 
 }
 
