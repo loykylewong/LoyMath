@@ -8,7 +8,8 @@
 namespace LoyMath
 {
 
-// T : base type, all calculation are done by base type.
+// T : base type, assuming there is fpu of the base type in cpu,
+//     all calculations are done by the base type.
 template<typename T = float, typename = std::enable_if_t<
     std::is_same_v<T, float> /*|| std::is_same_v<T, double>*/ > >
 class fp16
@@ -53,7 +54,7 @@ private:
         int16_t sexp() const { return (int16_t)exp - 1023; }
     };
     template<typename U = T, typename = std::enable_if_t<std::is_same_v<U, float>>>
-    _fp16 from_base(T value) const
+    inline _fp16 from_base(T value) const
     {
         _fp16 f16;
         _fp32 f32(value);
@@ -90,7 +91,7 @@ private:
         return f16;
     }
     template<typename U = T, typename = std::enable_if_t<std::is_same_v<U, float>>>
-    T to_base(const _fp16 &f16) const
+    inline T to_base(const _fp16 &f16) const
     {
     	_fp32 f32;
         uint32_t man = (uint32_t)f16.man << 13;
@@ -130,6 +131,7 @@ private:
         return f32.value;
     }
     fp16(const _fp16 &f16) : value(f16) {}
+    fp16(uint16_t bits) { value.bits = bits; }
 public:
     // ---- constructors and assign ----
     // default constructor
@@ -138,6 +140,10 @@ public:
     fp16(T value)
     {
         this->value = from_base(value);    
+    }
+    static fp16 from_bits(uint16_t bits)
+    {
+        return fp16(bits);
     }
     // assign from base type
     fp16 &operator=(T value)
@@ -150,11 +156,17 @@ public:
         this->value = r.value;
     }
     // ---- converter----
+    // get represent bits
+    uint16_t get_bits() const
+    {
+        return value.bits;
+    }
     // convert to base type
     T to_base() const
     {
         return to_base(value);
     }
+    // test code for verification
     T to_base2() const
     {
     	if(value.exp < 31)
