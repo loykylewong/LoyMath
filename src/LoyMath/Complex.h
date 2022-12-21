@@ -47,9 +47,15 @@ public:
 	char *ToString(char *str, char format) const
 	{
 		if(format == 'p')	// polar format
-			sprintf(str, "%g @ %g", this->Abs(), this->Arg());
+			sprintf(str, "%g@%g", this->Abs(), this->Arg());
 		else
-			sprintf(str, "%g + j %g", this->real, this->imag);
+		{
+		    if(this->imag >= 0)
+		        sprintf(str, "%g+%gj", this->real, this->imag);
+		    else
+                sprintf(str, "%g-%gj", this->real, -this->imag);
+		}
+
 		return str;
 	}
 

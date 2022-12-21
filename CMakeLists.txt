@@ -6,7 +6,7 @@ set(CXX_STANDARD 17)
 include(CTest)
 enable_testing()
 
-file(GLOB SRCS main.cpp test/*.cpp)
+file(GLOB_RECURSE SRCS src/*.cpp)
 add_executable(loymath ${SRCS})
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
