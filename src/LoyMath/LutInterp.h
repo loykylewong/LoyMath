@@ -41,6 +41,10 @@ public:
     {
         delete[] lut;
     }
+    size_t LutSize()
+    {
+        return this->lut_size;
+    }
     // use for custom initialize the lut
     // CAUTION: actual LUT size is (1 << lut_aw) + 1, the last one
     //          is extended for the last interpolation domain, and
@@ -50,7 +54,7 @@ public:
         assert(idx < lut_size);
         return lut[idx];
     }
-    YT operator()(XT x) const
+    YT LookUp(XT x) const
     {
         if(!lut_fw)
         {
@@ -81,6 +85,10 @@ public:
                 return (y0 * w0 + y1 * w1) / (YT)(1 << lut_fw);
             }
         }
+    }
+    YT operator()(XT x) const
+    {
+        return LookUp(x);
     }
 };
 
