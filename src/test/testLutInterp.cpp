@@ -20,9 +20,9 @@ void lut_interp_u16_test()
     const size_t w = 640, h = 480, f = 10;
     const size_t test_size = w * h * f;
 
-    const uint8_t lut_aw = 16;
+    const uint8_t lut_aw = 8;
     const size_t lut_size = (size_t)1 << lut_aw;
-    LutInterp<uint16_t, int16_t> li(lut_aw);
+    LutInterp<uint16_t, int16_t, lut_aw> li;
     for(size_t i = 0; i < lut_size + 1; i++)
     {
         // x: [0, 65536)->[0, 2pi); y: [-32767, 32767]->[-1, 1]
@@ -76,7 +76,7 @@ void lut_interp_u16_test()
     }
     err_rms = std::sqrt(err_rms / (float)test_size);
     printf("Time of %lu*%lu*%lu std::sin(float)  : %7.3lfms.\r\n", w, h, f, t0);
-    printf("Time of %lu*%lu*%lu Lut<u16,s16>(%2u) : %7.3lfms.\r\n", w, h, f, lut_aw, t1);
+    printf("Time of %lu*%lu*%lu Lut<u16,s16,%2u> : %7.3lfms.\r\n", w, h, f, lut_aw, t1);
     printf("RMSE  : %8.6f.\r\n", err_rms);
     printf("PeakE : %8.6f Lut(%d)\r\n", err_max, err_max_x);
 

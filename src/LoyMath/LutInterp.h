@@ -15,26 +15,20 @@
 namespace LoyMath
 {
 
-template<typename XT = uint16_t, typename YT = int16_t, typename = std::enable_if_t< std::is_arithmetic_v<YT> &&
+template<typename XT, typename YT, uint8_t LUT_AW, typename = std::enable_if_t< std::is_arithmetic_v<YT> &&
     (std::is_same_v<XT, uint8_t> || std::is_same_v<XT, uint16_t> || std::is_same_v<XT, uint32_t>) &&
-    sizeof(YT) >= sizeof(XT) >>
+    sizeof(YT) >= sizeof(XT) && LUT_AW <= 8 * sizeof(XT) >>
 class LutInterp
 {
 private:
-    uint8_t lut_aw;
-    uint8_t lut_fw;
-    XT lut_fmask;
-    size_t lut_size;
+    static constexpr uint8_t lut_fw = 8 * sizeof(XT) - LUT_AW;
+    static constexpr XT lut_fmask = (1UL << lut_fw) - 1;
+    static constexpr size_t lut_size = 1 + ((size_t)1 << LUT_AW);
     YT *lut;
 public:
-    LutInterp() = delete;
     LutInterp(const LutInterp &) = delete;
-    LutInterp(size_t lut_aw) : lut_aw(lut_aw)
+    LutInterp()
     {
-        assert(lut_aw >= 4 && lut_aw <= sizeof(XT) * 8);
-        lut_fw = 8 * sizeof(XT) - lut_aw;
-        lut_fmask = (1UL << lut_fw) - 1;
-        lut_size = 1 + ((size_t)1 << lut_aw);  // extend one for the last interpolation domain
         lut = new YT[lut_size];
     }
     virtual ~LutInterp()
@@ -56,7 +50,7 @@ public:
     }
     YT LookUp(XT x) const
     {
-        if(!lut_fw)
+        if constexpr(!lut_fw)
         {
             return lut[x];
         }
